@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from 'cookie-parser';
 import authRouter from "./API/authRouter.js";
 import postRouter from "./API/postRouter.js";
 import bodyParser from "body-parser";
@@ -9,7 +10,7 @@ const StartServer = async () => {
   const app = express();
   app.use(bodyParser.json());
   app.use(express.json());
-
+  app.use(cookieParser());
   app.use("/auth", authRouter);
   app.use("/post", postRouter);
 

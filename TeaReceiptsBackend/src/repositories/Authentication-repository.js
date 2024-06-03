@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import generateAccessToken from "../Utils/GenerateJWTToken.js";
+import { generateAccessToken, generateRefreshToken, generateTokenFromRefresh } from "../Utils/GenerateJWTToken.js";
 import bcrypt from "bcrypt";
 const prisma = new PrismaClient();
 import errorHandler from "../Utils/Errors.js";
@@ -52,11 +52,32 @@ class authRepo {
         const error = errorHandler("Invalid username or password", 404);
         throw error;
       }
-      const accessToken = generateAccessToken(userExists);
+      const user = {
+        id: userExists.id,
+        name: userExists.name,
+        email: userExists.email,
+        username: userExists.username,
+      };
+      const accessToken = generateAccessToken(user);
+      const refreshToken = generateRefreshToken(user);
       return {
         statusCode: 200,
         message: "User authenticated successfully",
-        accessToken: accessToken,
+        accessToken,
+        refreshToken
+      };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async refreshToken(token) {
+    try {
+      const accessToken = generateTokenFromRefresh(token);
+      return {
+        statusCode: 200,
+        message: "User authenticated successfully",
+        accessToken
       };
     } catch (error) {
       return error;

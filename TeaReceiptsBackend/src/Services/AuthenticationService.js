@@ -23,7 +23,6 @@ class AuthService {
         generateUserName,
         hashPassword
       );
-      console.log(response);
       return response;
     } catch (err) {
       return err;
@@ -32,13 +31,16 @@ class AuthService {
 
   async signin(data) {
     const response = await this.authRepository.signin(data);
-    console.log(response);
+    return response;
+  }
+
+  async refreshToken(token) {
+    const response = await this.authRepository.refreshToken(token);
     return response;
   }
 
   async passwordRecovery(data) {
     const response = await this.authRepository.resetPassword(data);
-    console.log(response);
     return response;
   }
 }
