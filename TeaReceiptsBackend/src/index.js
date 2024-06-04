@@ -1,12 +1,10 @@
 import express from "express";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import authRouter from "./API/authRouter.js";
 import postRouter from "./API/postRouter.js";
 import bodyParser from "body-parser";
 
-const PORT = process.env.PORT || 8000;
-
-const StartServer = async () => {
+const createServer = () => {
   const app = express();
   app.use(bodyParser.json());
   app.use(express.json());
@@ -23,14 +21,7 @@ const StartServer = async () => {
     });
   });
 
-  app
-    .listen(PORT, () => {
-      console.log(`listening to port ${PORT}`);
-    })
-    .on("error", (err) => {
-      console.log(err);
-      process.exit();
-    });
+  return app;
 };
 
-StartServer();
+export default createServer;
