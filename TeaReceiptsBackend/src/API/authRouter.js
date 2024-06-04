@@ -20,7 +20,6 @@ authRouter.post("/signin", async (req, res) => {
     const { email, password } = req.body;
     const response = await authService.signin({ email, password });
     const { accessToken, refreshToken } = response;
-    console.log(response);
     res.cookie('accessToken', accessToken, { httpOnly: true, secure: true, sameSite: 'strict' });
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
     return res.json(response);
